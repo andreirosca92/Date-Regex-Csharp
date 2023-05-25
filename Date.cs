@@ -75,26 +75,18 @@ namespace DateRegex{
 
         }
         public Date(string laData, TimeZone timezone){
-            string pattern =@"[/]";
+            string pattern =@"[-/]";
             Regex rgx = new Regex(pattern);
-            if(rgx.IsMatch(laData)){
-                string[] n = laData.Split('/');
-                if(n.Length != 3 || n[0].Length == 0 || n[1].Length == 0 || n[2].Length != 2)
-                    throw new InvalidOperationException();
-                A = int.Parse(n[2]);
-                M = int.Parse(n[1]);
-                G = int.Parse(n[0]);
-                TIMEZONE = timezone;
-           
-            }else{
-                string[] n = laData.Split('-');
-                if(n.Length != 3 || n[0].Length == 0 || n[1].Length == 0 || n[2].Length != 2)
-                    throw new InvalidOperationException();
-                A = int.Parse(n[2]);
-                M = int.Parse(n[1]);
-                G = int.Parse(n[0]);
-                TIMEZONE = timezone;
-            }
+            
+            string[] n =rgx.Split(laData);
+            if(n.Length != 3 || n[0].Length == 0 || n[1].Length == 0 || n[2].Length != 2)
+                throw new InvalidOperationException();
+            A = int.Parse(n[2]);
+            M = int.Parse(n[1]);
+            G = int.Parse(n[0]);
+            TIMEZONE = timezone;
+            
+            
             
         }
         public override string ToString()
