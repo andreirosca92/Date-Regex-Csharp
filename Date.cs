@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace DateRegex{
     class  Date{
-        
+        static string[] nomiMese = {"Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"};
         private int g;
         private int m;
 
@@ -65,14 +65,28 @@ namespace DateRegex{
                     return 31;
             }
         }
-        public Date(int g, int m, int a, TimeZone timezone){
-            this.g = g;
-            this.m = m;
-            this.a = a;
-            this.timezone = timezone;
+         public Date(int _g, int _m, int _a, TimeZone _timezone){
+            G =_a; M = _m; G = _g; TIMEZONE = _timezone;
         }
-        public Date(){
-
+        public Date():this(1,1,1, TimeZone.IT){}
+        private static int MeseInt(string m){
+            return Array.IndexOf(nomiMese, Char.ToUpper(m[0]) + m.Substring(1).ToLower()) + 1;
+        }
+        public Date(int g, string m, int a, TimeZone timezone){
+            string pattern =@"\b(?i)(?:gen(?:naio)?|feb(?:braio)?|mar(?:zo)?|apr(?:ile)?|mag(?:gio)?|giu(?:gno)?|lug(?:lio)?|ago(?:sto)?|sett(?:embre)?|nov(?:embre)?|dic(?:embre))(?-i)$";
+            Regex rgx = new Regex(pattern);
+            if(m.Length == 0) throw new IndexOutOfRangeException("Mese vuoto");
+            else if(rgx.IsMatch(m)){
+                    this.g = g;
+                    this.m = MeseInt(m);
+                    this.a = a; 
+                    this.timezone = timezone;
+                }
+            else if (!rgx.IsMatch(m)){
+                    throw new Exception("Sbagliato formato mese");
+            }
+            
+            
         }
         public Date(string laData, TimeZone timezone){
             string pattern =@"[-/]";
